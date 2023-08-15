@@ -30,7 +30,8 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
 
   return res.status(200).json({
     token,
-    user: serializedUser
+    user: serializedUser,
+    refreshToken
   });
 };
 
@@ -38,8 +39,8 @@ export const update = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const token: string = req.cookies.jrt;
-
+  const { token } = req.params;
+  console.log(token);
   if (!token) {
     throw new AppError("ERR_SESSION_EXPIRED", 401);
   }
@@ -55,7 +56,7 @@ export const update = async (
 };
 
 export const me = async (req: Request, res: Response): Promise<Response> => {
-  const token: string = req.cookies.jrt;
+  const { token } = req.params;
   const user = await FindUserFromToken(token);
   const { id, profile, super: superAdmin } = user;
 

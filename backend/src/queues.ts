@@ -22,8 +22,8 @@ import path from "path";
 import User from "./models/User";
 import Company from "./models/Company";
 import Plan from "./models/Plan";
-const nodemailer = require('nodemailer');
-const CronJob = require('cron').CronJob;
+const nodemailer = require("nodemailer");
+const CronJob = require("cron").CronJob;
 
 const connection = process.env.REDIS_URI || "";
 const limiterMax = process.env.REDIS_OPT_LIMITER_MAX || 1;
@@ -48,7 +48,6 @@ interface DispatchCampaignData {
 }
 
 export const userMonitor = new Queue("UserMonitor", connection);
-
 
 export const messageQueue = new Queue("MessageQueue", connection, {
   limiter: {
@@ -600,12 +599,9 @@ async function handleLoginStatus(job) {
   }
 }
 
-
 async function handleInvoiceCreate() {
   logger.info("Iniciando geração de boletos");
-  const job = new CronJob('0 0 0 * * *', async () => {
-
-
+  const job = new CronJob("0 0 0 * * *", async () => {
     const companies = await Company.findAll();
     companies.map(async c => {
       var dueDate = c.dueDate;
@@ -614,27 +610,28 @@ async function handleInvoiceCreate() {
       const hoje = moment(moment()).format("DD/MM/yyyy");
       var vencimento = moment(dueDate).format("DD/MM/yyyy");
 
-      var diff = moment(vencimento, "DD/MM/yyyy").diff(moment(hoje, "DD/MM/yyyy"));
+      var diff = moment(vencimento, "DD/MM/yyyy").diff(
+        moment(hoje, "DD/MM/yyyy")
+      );
       var dias = moment.duration(diff).asDays();
 
       if (dias < 20) {
         const plan = await Plan.findByPk(c.planId);
 
-        const sql = `SELECT COUNT(*) mycount FROM "Invoices" WHERE "companyId" = ${c.id} AND "dueDate"::text LIKE '${moment(dueDate).format("yyyy-MM-DD")}%';`
-        const invoice = await sequelize.query(sql,
-          { type: QueryTypes.SELECT }
-        );
-        if (invoice[0]['mycount'] > 0) {
-          
+        const sql = `SELECT COUNT(*) mycount FROM "Invoices" WHERE "companyId" = ${
+          c.id
+        } AND "dueDate"::text LIKE '${moment(dueDate).format("yyyy-MM-DD")}%';`;
+        const invoice = await sequelize.query(sql, { type: QueryTypes.SELECT });
+        if (invoice[0]["mycount"] > 0) {
         } else {
           const sql = `INSERT INTO "Invoices" (detail, status, value, "updatedAt", "createdAt", "dueDate", "companyId")
-          VALUES ('${plan.name}', 'open', '${plan.value}', '${timestamp}', '${timestamp}', '${date}', ${c.id});`
+          VALUES ('${plan.name}', 'open', '${plan.value}', '${timestamp}', '${timestamp}', '${date}', ${c.id});`;
 
-          const invoiceInsert = await sequelize.query(sql,
-            { type: QueryTypes.INSERT }
-          );
+          const invoiceInsert = await sequelize.query(sql, {
+            type: QueryTypes.INSERT
+          });
 
-/*           let transporter = nodemailer.createTransport({
+          /*           let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
               user: 'email@gmail.com',
@@ -662,22 +659,14 @@ Qualquer duvida estamos a disposição!
             else
               console.log(info);
           }); */
-
         }
-
-
-
-
-
       }
-
     });
   });
-  job.start()
+  job.start();
 }
 
-
-handleInvoiceCreate()
+handleInvoiceCreate();
 
 export async function startQueueProcess() {
   logger.info("Iniciando processamento de filas");
@@ -697,14 +686,11 @@ export async function startQueueProcess() {
   campaignQueue.process("DispatchCampaign", handleDispatchCampaign);
 
   userMonitor.process("VerifyLoginStatus", handleLoginStatus);
-
-
-
-
   scheduleMonitor.add(
     "Verify",
     {},
     {
+      //@ts-ignore
       repeat: { cron: "*/5 * * * * *" },
       removeOnComplete: true
     }
@@ -714,6 +700,7 @@ export async function startQueueProcess() {
     "VerifyCampaigns",
     {},
     {
+      //@ts-ignore
       repeat: { cron: "*/20 * * * * *" },
       removeOnComplete: true
     }
@@ -723,6 +710,7 @@ export async function startQueueProcess() {
     "VerifyLoginStatus",
     {},
     {
+      //@ts-ignore
       repeat: { cron: "* * * * *" },
       removeOnComplete: true
     }

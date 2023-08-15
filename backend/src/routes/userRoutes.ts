@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import isAuth from "../middleware/isAuth";
 import * as UserController from "../controllers/UserController";
+import { upl } from "../utils/imagemUpload";
 
 const userRoutes = Router();
 

@@ -1,14 +1,17 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import ReactDOM from "react-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import App from "./App";
 
 ReactDOM.render(
-	<CssBaseline>
-		<App />
-	</CssBaseline>,
-	document.getElementById("root")
+  <BrowserRouter>
+    <CssBaseline>
+      <App />
+    </CssBaseline>
+  </BrowserRouter>,
+  document.getElementById("root")
 );
 
 // ReactDOM.render(

@@ -4,6 +4,8 @@ import { getIO } from "../libs/socket";
 import CheckSettingsHelper from "../helpers/CheckSettings";
 import AppError from "../errors/AppError";
 
+import { PathLike, unlink } from "fs";
+
 import CreateUserService from "../services/UserServices/CreateUserService";
 import ListUsersService from "../services/UserServices/ListUsersService";
 import UpdateUserService from "../services/UserServices/UpdateUserService";

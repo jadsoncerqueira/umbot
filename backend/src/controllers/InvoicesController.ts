@@ -12,13 +12,15 @@ import DeletePlanService from "../services/PlanService/DeletePlanService";
 import FindAllInvoiceService from "../services/InvoicesService/FindAllInvoiceService";
 import ListInvoicesServices from "../services/InvoicesService/ListInvoicesServices";
 import ShowInvoceService from "../services/InvoicesService/ShowInvoiceService";
-import UpdateInvoiceService from "../services/InvoicesService/UpdateInvoiceService";
+import UpdateInvoiceService, {
+  CreateInvoiceService
+} from "../services/InvoicesService/UpdateInvoiceService";
 
 type IndexQuery = {
   searchParam: string;
   pageNumber: string;
 };
- 
+
 type StorePlanData = {
   name: string;
   id?: number | string;
@@ -52,6 +54,14 @@ export const show = async (req: Request, res: Response): Promise<Response> => {
   return res.status(200).json(invoice);
 };
 
+export const create = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const invoice = await CreateInvoiceService(req.body);
+
+  return res.status(200).json(invoice);
+};
 
 export const list = async (req: Request, res: Response): Promise<Response> => {
   const { companyId } = req.user;
@@ -80,8 +90,7 @@ export const update = async (
 
   const plan = await UpdateInvoiceService({
     id,
-    status,
-
+    status
   });
 
   // const io = getIO();
@@ -114,9 +123,9 @@ export const update = async (
   // });
 
   return res.status(200).json(plan);
-};
+}; */
 
-export const show = async (req: Request, res: Response): Promise<Response> => {
+/*  export const show = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
 
   const plan = await ShowPlanService(id);

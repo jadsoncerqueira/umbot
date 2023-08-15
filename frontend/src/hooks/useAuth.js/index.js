@@ -35,18 +35,33 @@ const useAuth = () => {
     },
     async (error) => {
       const originalRequest = error.config;
-      if (error?.response?.status === 403 && !originalRequest._retry) {
-        originalRequest._retry = true;
+      // if (error?.response?.status === 403 && !originalRequest._retry) {
+      //   originalRequest._retry = true;
 
-        const { data } = await api.post("/auth/refresh_token");
-        if (data) {
-          localStorage.setItem("token", JSON.stringify(data.token));
-          api.defaults.headers.Authorization = `Bearer ${data.token}`;
+      //   const { data } = await api.post("/auth/refresh_token");
+      //   if (data) {
+      //     localStorage.setItem("token", JSON.stringify(data.token));
+      //     api.defaults.headers.Authorization = `Bearer ${data.token}`;
+      //   }
+      //   return api(originalRequest);
+      // }
+      if (error?.response?.status === 403 && !originalRequest._retry) {
+        if (localStorage.getItem("token")) {
+          originalRequest._retry = true;
+          const { data } = await api.post(
+            `/auth/refresh_token/${localStorage.getItem("jrt")}`
+          );
+          if (data) {
+            localStorage.setItem("token", JSON.stringify(data.token));
+            api.defaults.headers.Authorization = `Bearer ${data.token}`;
+          }
+          return api(originalRequest);
         }
-        return api(originalRequest);
+        setIsAuth(false);
       }
       if (error?.response?.status === 401) {
         localStorage.removeItem("token");
+        console.log("teste1");
         localStorage.removeItem("companyId");
         api.defaults.headers.Authorization = undefined;
         setIsAuth(false);
@@ -60,7 +75,9 @@ const useAuth = () => {
     (async () => {
       if (token) {
         try {
-          const { data } = await api.post("/auth/refresh_token");
+          const { data } = await api.post(
+            `/auth/refresh_token/${localStorage.getItem("jrt")}`
+          );
           api.defaults.headers.Authorization = `Bearer ${data.token}`;
           setIsAuth(true);
           setUser(data.user);
@@ -92,7 +109,10 @@ const useAuth = () => {
     setLoading(true);
 
     try {
-      const { data } = await api.post("/auth/login", userData);
+      const t = await api.post("/auth/login", userData);
+      console.log("Resposta");
+      console.log(t);
+      const { data } = t;
       const {
         user: { companyId, id, company },
       } = data;
@@ -106,11 +126,12 @@ const useAuth = () => {
         }
       }
 
-      moment.locale('pt-br');
+      moment.locale("pt-br");
       const dueDate = data.user.company.dueDate;
+      // eslint-disable-next-line
       const hoje = moment(moment()).format("DD/MM/yyyy");
       const vencimento = moment(dueDate).format("DD/MM/yyyy");
-      
+
       var diff = moment(dueDate).diff(moment(moment()).format());
 
       var before = moment(moment().format()).isBefore(dueDate);
@@ -118,6 +139,9 @@ const useAuth = () => {
 
       if (before === true) {
         localStorage.setItem("token", JSON.stringify(data.token));
+        // document.cookie = `jrt=${data.refreshToken}, Secure`;
+        localStorage.setItem("jrt", data.refreshToken);
+        console.log(data);
         localStorage.setItem("companyId", companyId);
         localStorage.setItem("userId", id);
         localStorage.setItem("companyDueDate", vencimento);
@@ -126,7 +150,11 @@ const useAuth = () => {
         setIsAuth(true);
         toast.success(i18n.t("auth.toasts.success"));
         if (Math.round(dias) < 5) {
-          toast.warn(`Sua assinatura vence em ${Math.round(dias)} ${Math.round(dias) === 1 ? 'dia' : 'dias'} `);
+          toast.warn(
+            `Sua assinatura vence em ${Math.round(dias)} ${
+              Math.round(dias) === 1 ? "dia" : "dias"
+            } `
+          );
         }
         history.push("/tickets");
         setLoading(false);
@@ -136,7 +164,7 @@ Entre em contato com o Suporte para mais informações! `);
         setLoading(false);
       }
 
-      //quebra linha 
+      //quebra linha
     } catch (err) {
       toastError(err);
       setLoading(false);
@@ -151,6 +179,7 @@ Entre em contato com o Suporte para mais informações! `);
       setIsAuth(false);
       setUser({});
       localStorage.removeItem("token");
+      console.log("teste2");
       localStorage.removeItem("companyId");
       localStorage.removeItem("userId");
       localStorage.removeItem("cshow");
@@ -165,7 +194,7 @@ Entre em contato com o Suporte para mais informações! `);
 
   const getCurrentUserInfo = async () => {
     try {
-      const { data } = await api.get("/auth/me");
+      const { data } = await api.get(`/auth/me/${localStorage.getItem("jrt")}`);
       return data;
     } catch (err) {
       toastError(err);

@@ -4,15 +4,21 @@ import { Request, Response } from "express";
 import AppError from "../errors/AppError";
 import Company from "../models/Company";
 
+import { unlink, PathLike } from "fs";
+
 import ListCompaniesService from "../services/CompanyService/ListCompaniesService";
 import CreateCompanyService from "../services/CompanyService/CreateCompanyService";
-import UpdateCompanyService from "../services/CompanyService/UpdateCompanyService";
+import UpdateCompanyService, {
+  UpdateImageService
+} from "../services/CompanyService/UpdateCompanyService";
 import ShowCompanyService from "../services/CompanyService/ShowCompanyService";
 import UpdateSchedulesService from "../services/CompanyService/UpdateSchedulesService";
 import DeleteCompanyService from "../services/CompanyService/DeleteCompanyService";
 import FindAllCompaniesService from "../services/CompanyService/FindAllCompaniesService";
 import User from "../models/User";
-
+import { CreateInvoiceService } from "../services/InvoicesService/UpdateInvoiceService";
+import Invoices from "../models/Invoices";
+import Plan from "../models/Plan";
 
 type IndexQuery = {
   searchParam: string;
@@ -34,7 +40,6 @@ type CompanyData = {
 type SchedulesData = {
   schedules: [];
 };
-
 
 export const index = async (req: Request, res: Response): Promise<Response> => {
   const userId = req.user.id;
@@ -62,7 +67,6 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
     throw new AppError("você nao tem permissão para este consulta");
   }
 
-
   const newCompany: CompanyData = req.body;
 
   const schema = Yup.object().shape({
@@ -77,6 +81,9 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
 
   const company = await CreateCompanyService(newCompany);
 
+  const { dueDate } = newCompany;
+  const { id, planId } = company;
+  await CreateInvoiceService({ companyId: id, planId, dueDate, stat: "open" });
   return res.status(200).json(company);
 };
 
@@ -84,7 +91,6 @@ export const show = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
   const userId = req.user.id;
   const requestUser = await User.findByPk(userId);
-
 
   const company = await ShowCompanyService(id);
 
@@ -129,6 +135,18 @@ export const update = async (
 
   const company = await UpdateCompanyService({ id, ...companyData });
 
+  const planoAtual = await Plan.findByPk(company.planId);
+  const invoices = await Invoices.findAll({
+    where: { companyId: companyData.id }
+  });
+
+  const invoice = invoices.find(voi => voi.status === "open");
+  await invoice.update({
+    detail: planoAtual.name,
+    value: planoAtual.value,
+    updatedAt: new Date().toString()
+  });
+
   return res.status(200).json(company);
 };
 
@@ -168,4 +186,34 @@ export const remove = async (
   const company = await DeleteCompanyService(id);
 
   return res.status(200).json(company);
+};
+
+export const updateImage = async (
+  req: Request,
+  _res: Response
+): Promise<void> => {
+  const { file } = req;
+
+  try {
+    const { id } = req.params;
+
+    const company = await ShowCompanyService(id);
+    await UpdateImageService(id, file.filename);
+
+    if (company.logo !== null) {
+      const caminho = `public/images/${company.logo}`;
+      unlink(caminho, err => {
+        if (err) {
+          console.error(`Erro ao excluir a imagem ${caminho}: ${err}`);
+        }
+      });
+    }
+  } catch (error) {
+    const caminho = file?.path as PathLike;
+    unlink(caminho, err => {
+      if (err) {
+        console.error(`Erro ao excluir a imagem ${caminho}: ${err}`);
+      }
+    });
+  }
 };

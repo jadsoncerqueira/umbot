@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable */
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import QRCode from 'react-qr-code';
-import { SuccessContent, Total } from './style';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { FaCopy, FaCheckCircle } from 'react-icons/fa';
+import QRCode from "react-qr-code";
+import { SuccessContent, Total } from "./style";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { FaCopy, FaCheckCircle } from "react-icons/fa";
 import { socketConnection } from "../../../services/socket";
 import { useDate } from "../../../hooks/useDate";
 import { toast } from "react-toastify";
 
 function CheckoutSuccess(props) {
-
   const { pix } = props;
-  const [pixString,] = useState(pix.qrcode.qrcode);
+  const [pixString] = useState(pix.qrcode.qrcode);
   const [copied, setCopied] = useState(false);
   const history = useHistory();
 
@@ -20,10 +20,11 @@ function CheckoutSuccess(props) {
   useEffect(() => {
     const companyId = localStorage.getItem("companyId");
     const socket = socketConnection({ companyId });
-    socket.on(`company-${companyId}-payment`, (data) => {
-
+    socket.on(`company-${companyId}-payment`, data => {
       if (data.action === "CONCLUIDA") {
-        toast.success(`Sua licença foi renovada até ${dateToClient(data.company.dueDate)}!`);
+        toast.success(
+          `Sua licença foi renovada até ${dateToClient(data.company.dueDate)}!`
+        );
         setTimeout(() => {
           history.push("/");
         }, 4000);
@@ -42,7 +43,12 @@ function CheckoutSuccess(props) {
     <React.Fragment>
       <Total>
         <span>TOTAL</span>
-        <strong>R${pix.valor.original.toLocaleString('pt-br', { minimumFractionDigits: 2 })}</strong>
+        <strong>
+          R$
+          {pix.valor.original.toLocaleString("pt-br", {
+            minimumFractionDigits: 2
+          })}
+        </strong>
       </Total>
       <SuccessContent>
         <QRCode value={pixString} />

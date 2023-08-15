@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 
 import Grid from "@material-ui/core/Grid";
@@ -7,28 +8,31 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import TextField from "@material-ui/core/TextField";
+// eslint-disable-next-line
 import Title from "../Title";
+// eslint-disable-next-line
 import Paper from "@material-ui/core/Paper";
+// eslint-disable-next-line
 import Typography from "@material-ui/core/Typography";
 import useSettings from "../../hooks/useSettings";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import { makeStyles } from "@material-ui/core/styles";
 import { grey, blue } from "@material-ui/core/colors";
 import { Tabs, Tab } from "@material-ui/core";
 
 //import 'react-toastify/dist/ReactToastify.css';
- 
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = makeStyles(theme => ({
   container: {
     paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingBottom: theme.spacing(4)
   },
   fixedHeightPaper: {
     padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
     flexDirection: "column",
-    height: 240,
+    height: 240
   },
   tab: {
     background: "#f2f5f3",
@@ -40,41 +44,39 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiTabs-flexContainer": {
       justifyContent: "center"
     }
-
-
   },
   paper: {
     padding: theme.spacing(2),
     display: "flex",
     alignItems: "center",
     marginBottom: 12,
-    width: "100%",
+    width: "100%"
   },
   cardAvatar: {
     fontSize: "55px",
     color: grey[500],
     backgroundColor: "#ffffff",
     width: theme.spacing(7),
-    height: theme.spacing(7),
+    height: theme.spacing(7)
   },
   cardTitle: {
     fontSize: "18px",
-    color: blue[700],
+    color: blue[700]
   },
   cardSubtitle: {
     color: grey[600],
-    fontSize: "14px",
+    fontSize: "14px"
   },
   alignRight: {
-    textAlign: "right",
+    textAlign: "right"
   },
   fullWidth: {
-    width: "100%",
+    width: "100%"
   },
   selectContainer: {
     width: "100%",
-    textAlign: "left",
-  },
+    textAlign: "left"
+  }
 }));
 
 export default function Options(props) {
@@ -90,8 +92,8 @@ export default function Options(props) {
   const [loadingScheduleType, setLoadingScheduleType] = useState(false);
   const [loadingCallType, setLoadingCallType] = useState(false);
   const [loadingChatbotType, setLoadingChatbotType] = useState(false);
+  // eslint-disable-next-line
   const [loadingCheckMsgIsGroup, setCheckMsgIsGroup] = useState(false);
-
 
   const [ipixcType, setIpIxcType] = useState("");
   const [loadingIpIxcType, setLoadingIpIxcType] = useState(false);
@@ -101,9 +103,11 @@ export default function Options(props) {
   const [ipmkauthType, setIpMkauthType] = useState("");
   const [loadingIpMkauthType, setLoadingIpMkauthType] = useState(false);
   const [clientidmkauthType, setClientIdMkauthType] = useState("");
-  const [loadingClientIdMkauthType, setLoadingClientIdMkauthType] = useState(false);
+  const [loadingClientIdMkauthType, setLoadingClientIdMkauthType] =
+    useState(false);
   const [clientsecretmkauthType, setClientSecrectMkauthType] = useState("");
-  const [loadingClientSecrectMkauthType, setLoadingClientSecrectMkauthType] = useState(false);
+  const [loadingClientSecrectMkauthType, setLoadingClientSecrectMkauthType] =
+    useState(false);
 
   const [asaasType, setAsaasType] = useState("");
   const [loadingAsaasType, setLoadingAsaasType] = useState(false);
@@ -112,53 +116,55 @@ export default function Options(props) {
 
   useEffect(() => {
     if (Array.isArray(settings) && settings.length) {
-      const userRating = settings.find((s) => s.key === "userRating");
+      const userRating = settings.find(s => s.key === "userRating");
       if (userRating) {
         setUserRating(userRating.value);
       }
-      const scheduleType = settings.find((s) => s.key === "scheduleType");
+      const scheduleType = settings.find(s => s.key === "scheduleType");
       if (scheduleType) {
         setScheduleType(scheduleType.value);
       }
-      const callType = settings.find((s) => s.key === "call");
+      const callType = settings.find(s => s.key === "call");
       if (callType) {
         setCallType(callType.value);
       }
-      const CheckMsgIsGroup = settings.find((s) => s.key === "CheckMsgIsGroup");
+      const CheckMsgIsGroup = settings.find(s => s.key === "CheckMsgIsGroup");
       if (CheckMsgIsGroup) {
         setCheckMsgIsGroupType(CheckMsgIsGroup.value);
       }
-      const chatbotType = settings.find((s) => s.key === "chatBotType");
+      const chatbotType = settings.find(s => s.key === "chatBotType");
       if (chatbotType) {
         setChatbotType(chatbotType.value);
       }
 
-      const ipixcType = settings.find((s) => s.key === "ipixc");
+      const ipixcType = settings.find(s => s.key === "ipixc");
       if (ipixcType) {
         setIpIxcType(ipixcType.value);
       }
 
-      const tokenixcType = settings.find((s) => s.key === "tokenixc");
+      const tokenixcType = settings.find(s => s.key === "tokenixc");
       if (tokenixcType) {
         setTokenIxcType(tokenixcType.value);
       }
 
-      const ipmkauthType = settings.find((s) => s.key === "ipmkauth");
+      const ipmkauthType = settings.find(s => s.key === "ipmkauth");
       if (ipmkauthType) {
         setIpMkauthType(ipmkauthType.value);
       }
 
-      const clientidmkauthType = settings.find((s) => s.key === "clientidmkauth");
+      const clientidmkauthType = settings.find(s => s.key === "clientidmkauth");
       if (clientidmkauthType) {
         setClientIdMkauthType(clientidmkauthType.value);
       }
 
-      const clientsecretmkauthType = settings.find((s) => s.key === "clientsecretmkauth");
+      const clientsecretmkauthType = settings.find(
+        s => s.key === "clientsecretmkauth"
+      );
       if (clientsecretmkauthType) {
         setClientSecrectMkauthType(clientsecretmkauthType.value);
       }
 
-      const asaasType = settings.find((s) => s.key === "asaas");
+      const asaasType = settings.find(s => s.key === "asaas");
       if (asaasType) {
         setAsaasType(asaasType.value);
       }
@@ -171,7 +177,7 @@ export default function Options(props) {
     setLoadingUserRating(true);
     await update({
       key: "userRating",
-      value,
+      value
     });
     toast.success("Operação atualizada com sucesso.");
     setLoadingUserRating(false);
@@ -182,18 +188,18 @@ export default function Options(props) {
     setLoadingScheduleType(true);
     await update({
       key: "scheduleType",
-      value,
+      value
     });
     //toast.success("Oraçãpeo atualizada com sucesso.");
-    toast.success('Operação atualizada com sucesso.', {
+    toast.success("Operação atualizada com sucesso.", {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: false,
       draggable: true,
-      theme: "light",
-      });
+      theme: "light"
+    });
     setLoadingScheduleType(false);
     if (typeof scheduleTypeChanged === "function") {
       scheduleTypeChanged(value);
@@ -205,7 +211,7 @@ export default function Options(props) {
     setLoadingCallType(true);
     await update({
       key: "call",
-      value,
+      value
     });
     toast.success("Operação atualizada com sucesso.");
     setLoadingCallType(false);
@@ -216,7 +222,7 @@ export default function Options(props) {
     setLoadingChatbotType(true);
     await update({
       key: "chatBotType",
-      value,
+      value
     });
     toast.success("Operação atualizada com sucesso.");
     setLoadingChatbotType(false);
@@ -227,7 +233,7 @@ export default function Options(props) {
     setCheckMsgIsGroup(true);
     await update({
       key: "CheckMsgIsGroup",
-      value,
+      value
     });
     toast.success("Operação atualizada com sucesso.");
     setCheckMsgIsGroup(false);
@@ -241,7 +247,7 @@ export default function Options(props) {
     setLoadingIpIxcType(true);
     await update({
       key: "ipixc",
-      value,
+      value
     });
     toast.success("Operação atualizada com sucesso.");
     setLoadingIpIxcType(false);
@@ -252,7 +258,7 @@ export default function Options(props) {
     setLoadingTokenIxcType(true);
     await update({
       key: "tokenixc",
-      value,
+      value
     });
     toast.success("Operação atualizada com sucesso.");
     setLoadingTokenIxcType(false);
@@ -263,7 +269,7 @@ export default function Options(props) {
     setLoadingIpMkauthType(true);
     await update({
       key: "ipmkauth",
-      value,
+      value
     });
     toast.success("Operação atualizada com sucesso.");
     setLoadingIpMkauthType(false);
@@ -274,7 +280,7 @@ export default function Options(props) {
     setLoadingClientIdMkauthType(true);
     await update({
       key: "clientidmkauth",
-      value,
+      value
     });
     toast.success("Operação atualizada com sucesso.");
     setLoadingClientIdMkauthType(false);
@@ -285,7 +291,7 @@ export default function Options(props) {
     setLoadingClientSecrectMkauthType(true);
     await update({
       key: "clientsecretmkauth",
-      value,
+      value
     });
     toast.success("Operação atualizada com sucesso.");
     setLoadingClientSecrectMkauthType(false);
@@ -296,7 +302,7 @@ export default function Options(props) {
     setLoadingAsaasType(true);
     await update({
       key: "asaas",
-      value,
+      value
     });
     toast.success("Operação atualizada com sucesso.");
     setLoadingAsaasType(false);
@@ -313,7 +319,7 @@ export default function Options(props) {
             <Select
               labelId="ratings-label"
               value={userRating}
-              onChange={async (e) => {
+              onChange={async e => {
                 handleChangeUserRating(e.target.value);
               }}
             >
@@ -333,7 +339,7 @@ export default function Options(props) {
             <Select
               labelId="schedule-type-label"
               value={scheduleType}
-              onChange={async (e) => {
+              onChange={async e => {
                 handleScheduleType(e.target.value);
               }}
             >
@@ -353,7 +359,7 @@ export default function Options(props) {
             <Select
               labelId="group-type-label"
               value={CheckMsgIsGroup}
-              onChange={async (e) => {
+              onChange={async e => {
                 handleGroupType(e.target.value);
               }}
             >
@@ -367,13 +373,11 @@ export default function Options(props) {
         </Grid>
         <Grid xs={12} sm={6} md={4} item>
           <FormControl className={classes.selectContainer}>
-            <InputLabel id="call-type-label">
-              Aceitar Chamada
-            </InputLabel>
+            <InputLabel id="call-type-label">Aceitar Chamada</InputLabel>
             <Select
               labelId="call-type-label"
               value={callType}
-              onChange={async (e) => {
+              onChange={async e => {
                 handleCallType(e.target.value);
               }}
             >
@@ -387,13 +391,11 @@ export default function Options(props) {
         </Grid>
         <Grid xs={12} sm={6} md={4} item>
           <FormControl className={classes.selectContainer}>
-            <InputLabel id="chatbot-type-label">
-              Tipo Chatbot
-            </InputLabel>
+            <InputLabel id="chatbot-type-label">Tipo Chatbot</InputLabel>
             <Select
               labelId="chatbot-type-label"
               value={chatbotType}
-              onChange={async (e) => {
+              onChange={async e => {
                 handleChatbotType(e.target.value);
               }}
             >
@@ -407,7 +409,7 @@ export default function Options(props) {
           </FormControl>
         </Grid>
       </Grid>
-      <Grid spacing={3} container>
+      {/* <Grid spacing={3} container>
         <Tabs
           indicatorColor="primary"
           textColor="primary"
@@ -419,16 +421,11 @@ export default function Options(props) {
             marginTop: 20
           }}
         >
-          <Tab
-
-            label="INTEGRAÇÕES" />
-
+          <Tab label="INTEGRAÇÕES" />
         </Tabs>
-
-      </Grid>
+      </Grid> */}
       {/*-----------------IXC-----------------*/}
-      <Grid spacing={3} container
-        style={{ marginBottom: 10 }}>
+      {/* <Grid spacing={3} container style={{ marginBottom: 10 }}>
         <Tabs
           indicatorColor="primary"
           textColor="primary"
@@ -436,10 +433,7 @@ export default function Options(props) {
           variant="scrollable"
           className={classes.tab}
         >
-          <Tab
-
-            label="IXC" />
-
+          <Tab label="IXC" />
         </Tabs>
         <Grid xs={12} sm={6} md={6} item>
           <FormControl className={classes.selectContainer}>
@@ -450,11 +444,10 @@ export default function Options(props) {
               label="IP do IXC"
               variant="outlined"
               value={ipixcType}
-              onChange={async (e) => {
+              onChange={async e => {
                 handleChangeIPIxc(e.target.value);
               }}
-            >
-            </TextField>
+            ></TextField>
             <FormHelperText>
               {loadingIpIxcType && "Atualizando..."}
             </FormHelperText>
@@ -469,20 +462,18 @@ export default function Options(props) {
               label="Token do IXC"
               variant="outlined"
               value={tokenixcType}
-              onChange={async (e) => {
+              onChange={async e => {
                 handleChangeTokenIxc(e.target.value);
               }}
-            >
-            </TextField>
+            ></TextField>
             <FormHelperText>
               {loadingTokenIxcType && "Atualizando..."}
             </FormHelperText>
           </FormControl>
         </Grid>
-      </Grid>
+      </Grid> */}
       {/*-----------------MK-AUTH-----------------*/}
-      <Grid spacing={3} container
-        style={{ marginBottom: 10 }}>
+      {/* <Grid spacing={3} container style={{ marginBottom: 10 }}>
         <Tabs
           indicatorColor="primary"
           textColor="primary"
@@ -491,7 +482,6 @@ export default function Options(props) {
           className={classes.tab}
         >
           <Tab label="MK-AUTH" />
-
         </Tabs>
         <Grid xs={12} sm={12} md={4} item>
           <FormControl className={classes.selectContainer}>
@@ -502,11 +492,10 @@ export default function Options(props) {
               label="Ip Mk-Auth"
               variant="outlined"
               value={ipmkauthType}
-              onChange={async (e) => {
+              onChange={async e => {
                 handleChangeIpMkauth(e.target.value);
               }}
-            >
-            </TextField>
+            ></TextField>
             <FormHelperText>
               {loadingIpMkauthType && "Atualizando..."}
             </FormHelperText>
@@ -521,11 +510,10 @@ export default function Options(props) {
               label="Client Id"
               variant="outlined"
               value={clientidmkauthType}
-              onChange={async (e) => {
+              onChange={async e => {
                 handleChangeClientIdMkauth(e.target.value);
               }}
-            >
-            </TextField>
+            ></TextField>
             <FormHelperText>
               {loadingClientIdMkauthType && "Atualizando..."}
             </FormHelperText>
@@ -540,20 +528,18 @@ export default function Options(props) {
               label="Client Secret"
               variant="outlined"
               value={clientsecretmkauthType}
-              onChange={async (e) => {
+              onChange={async e => {
                 handleChangeClientSecrectMkauth(e.target.value);
               }}
-            >
-            </TextField>
+            ></TextField>
             <FormHelperText>
               {loadingClientSecrectMkauthType && "Atualizando..."}
             </FormHelperText>
           </FormControl>
         </Grid>
-      </Grid>
+      </Grid> */}
       {/*-----------------ASAAS-----------------*/}
-      <Grid spacing={3} container
-        style={{ marginBottom: 10 }}>
+      {/* <Grid spacing={3} container style={{ marginBottom: 10 }}>
         <Tabs
           indicatorColor="primary"
           textColor="primary"
@@ -562,7 +548,6 @@ export default function Options(props) {
           className={classes.tab}
         >
           <Tab label="ASAAS" />
-
         </Tabs>
         <Grid xs={12} sm={12} md={12} item>
           <FormControl className={classes.selectContainer}>
@@ -573,17 +558,16 @@ export default function Options(props) {
               label="Token Asaas"
               variant="outlined"
               value={asaasType}
-              onChange={async (e) => {
+              onChange={async e => {
                 handleChangeAsaas(e.target.value);
               }}
-            >
-            </TextField>
+            ></TextField>
             <FormHelperText>
               {loadingAsaasType && "Atualizando..."}
             </FormHelperText>
           </FormControl>
         </Grid>
-      </Grid>
+      </Grid> */}
     </>
   );
 }

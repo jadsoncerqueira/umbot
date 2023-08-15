@@ -3,13 +3,16 @@ import { Server } from "http";
 import AppError from "../errors/AppError";
 import { logger } from "../utils/logger";
 import User from "../models/User";
+import { Identifier } from "sequelize";
 
 let io: SocketIO;
 
 export const initIO = (httpServer: Server): SocketIO => {
   io = new SocketIO(httpServer, {
     cors: {
-      origin: process.env.FRONTEND_URL
+      credentials: true,
+      origin: process.env.FRONTEND_URL,
+      exposedHeaders: ["Set-Cookie", "Date", "ETag"]
     }
   });
 
@@ -18,7 +21,8 @@ export const initIO = (httpServer: Server): SocketIO => {
     const { userId } = socket.handshake.query;
 
     if (userId && userId !== "undefined" && userId !== "null") {
-      const user = await User.findByPk(userId);
+      const aux = userId as unknown as Identifier;
+      const user = await User.findByPk(aux);
       if (user) {
         user.online = true;
         await user.save();

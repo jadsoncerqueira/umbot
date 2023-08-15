@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
-// import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-// import Link from "@material-ui/core/Link";
-// import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
+// eslint-disable-next-line
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -15,7 +16,7 @@ import { i18n } from "../../translate/i18n";
 
 import { AuthContext } from "../../context/Auth/AuthContext";
 import logo2 from "../../assets/logo2.png";
-
+import { CircularProgress } from "@material-ui/core";
 
 // const Copyright = () => {
 // 	return (
@@ -31,101 +32,116 @@ import logo2 from "../../assets/logo2.png";
 // };
 
 const useStyles = makeStyles(theme => ({
-	paper: {
-		marginTop: theme.spacing(8),
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-	},
-	avatar: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.secondary.main,
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(1),
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1)
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2)
+  }
 }));
 
 const Login = () => {
-	const classes = useStyles();
+  const classes = useStyles();
+  const [loadingButton, setLoadingButton] = useState(false);
 
-	const [user, setUser] = useState({ email: "", password: "" });
+  const [user, setUser] = useState({ email: "", password: "" });
 
-	const { handleLogin } = useContext(AuthContext);
+  const { handleLogin } = useContext(AuthContext);
 
-	const handleChangeInput = e => {
-		setUser({ ...user, [e.target.name]: e.target.value });
-	};
+  const handleChangeInput = e => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
 
-	const handlSubmit = e => {
-		e.preventDefault();
-		handleLogin(user);
-	};
+  const handlSubmit = async e => {
+    e.preventDefault();
+    setLoadingButton(true);
+    await handleLogin(user);
+    setLoadingButton(false);
+  };
 
-	return (
-		<Container component="main" maxWidth="xs">
-			<CssBaseline />
-			<div className={classes.paper}>
-				<div>
-					<center><img src={logo2} style={{ margin: "0 auto" , width: "70%"}} alt="logo2" /></center>
-				</div>
-				<form className={classes.form} noValidate onSubmit={handlSubmit}>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						id="email"
-						label={i18n.t("login.form.email")}
-						name="email"
-						value={user.email}
-						onChange={handleChangeInput}
-						autoComplete="email"
-						autoFocus
-					/>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						name="password"
-						label={i18n.t("login.form.password")}
-						type="password"
-						id="password"
-						value={user.password}
-						onChange={handleChangeInput}
-						autoComplete="current-password"
-					/>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-					>
-						{i18n.t("login.buttons.submit")}
-					</Button>
-					{/*<Grid container>
-						<Grid item>
-							<Link
-								href="#"
-								variant="body2"
-								component={RouterLink}
-								to="/signup"
-							>
-								{i18n.t("login.buttons.register")}
-							</Link>
-						</Grid>
-					</Grid>*/}
-				</form>
-			</div>
-			<Box mt={8}>{/* <Copyright /> */}</Box>
-		</Container>
-	);
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <div>
+          {/* <center>
+            <img
+              src={logo2}
+              style={{ margin: "0 auto", width: "70%" }}
+              alt="logo2"
+            />
+          </center> */}
+          <h2 style={{ margin: "0 auto", fontSize: "30px" }}>Login</h2>
+        </div>
+        <form className={classes.form} noValidate onSubmit={handlSubmit}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label={i18n.t("login.form.email")}
+            name="email"
+            value={user.email}
+            onChange={handleChangeInput}
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label={i18n.t("login.form.password")}
+            type="password"
+            id="password"
+            value={user.password}
+            onChange={handleChangeInput}
+            autoComplete="current-password"
+          />
+          <Button
+            disabled={loadingButton}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            {loadingButton ? (
+              <CircularProgress color="inherit" />
+            ) : (
+              i18n.t("login.buttons.submit")
+            )}
+          </Button>
+          <Grid container>
+            <Grid item>
+              <Link
+                href="#"
+                variant="body2"
+                component={RouterLink}
+                to="/signup"
+              >
+                {i18n.t("login.buttons.register")}
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+      <Box mt={8}>{/* <Copyright /> */}</Box>
+    </Container>
+  );
 };
 
 export default Login;

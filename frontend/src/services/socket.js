@@ -8,8 +8,11 @@ export function socketConnection(params) {
   }
   return openSocket(process.env.REACT_APP_BACKEND_URL, {
     transports: ["websocket", "polling", "flashsocket"],
-    pingTimeout: 18000,
-    pingInterval: 18000,
+    pingTimeout: 100000,
+    pingInterval: 100000,
     query: isObject(params) ? { ...params, userId } : { userId },
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 2000,
   });
 }

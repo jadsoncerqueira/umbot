@@ -12,25 +12,25 @@ import { i18n } from "../../translate/i18n.js";
 import toastError from "../../errors/toastError";
 import { socketConnection } from "../../services/socket";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     alignItems: "center",
-    padding: theme.spacing(4),
+    padding: theme.spacing(4)
   },
 
   paper: {
     padding: theme.spacing(2),
     display: "flex",
-    alignItems: "center",
+    alignItems: "center"
   },
 
   settingOption: {
-    marginLeft: "auto",
+    marginLeft: "auto"
   },
   margin: {
-    margin: theme.spacing(1),
-  },
+    margin: theme.spacing(1)
+  }
 }));
 
 const Settings = () => {
@@ -54,11 +54,11 @@ const Settings = () => {
     const companyId = localStorage.getItem("companyId");
     const socket = socketConnection({ companyId });
 
-    socket.on(`company-${companyId}-settings`, (data) => {
+    socket.on(`company-${companyId}-settings`, data => {
       if (data.action === "update") {
-        setSettings((prevState) => {
+        setSettings(prevState => {
           const aux = [...prevState];
-          const settingIndex = aux.findIndex((s) => s.key === data.setting.key);
+          const settingIndex = aux.findIndex(s => s.key === data.setting.key);
           aux[settingIndex].value = data.setting.value;
           return aux;
         });
@@ -70,13 +70,13 @@ const Settings = () => {
     };
   }, []);
 
-  const handleChangeSetting = async (e) => {
+  const handleChangeSetting = async e => {
     const selectedValue = e.target.value;
     const settingKey = e.target.name;
 
     try {
       await api.put(`/settings/${settingKey}`, {
-        value: selectedValue,
+        value: selectedValue
       });
       toast.success(i18n.t("settings.success"));
     } catch (err) {
@@ -84,8 +84,8 @@ const Settings = () => {
     }
   };
 
-  const getSettingValue = (key) => {
-    const { value } = settings.find((s) => s.key === key);
+  const getSettingValue = key => {
+    const { value } = settings.find(s => s.key === key);
     return value;
   };
 

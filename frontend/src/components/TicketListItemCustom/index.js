@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect, useRef, useContext } from "react";
 
 import { useHistory, useParams } from "react-router-dom";
@@ -27,21 +28,21 @@ import { TicketsContext } from "../../context/Tickets/TicketsContext";
 import toastError from "../../errors/toastError";
 import { v4 as uuidv4 } from "uuid";
 
-import RoomIcon from '@material-ui/icons/Room';
+import RoomIcon from "@material-ui/icons/Room";
 import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import AndroidIcon from "@material-ui/icons/Android";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import TicketMessagesDialog from "../TicketMessagesDialog";
-import DoneIcon from '@material-ui/icons/Done';
-import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
+import DoneIcon from "@material-ui/icons/Done";
+import ClearOutlinedIcon from "@material-ui/icons/ClearOutlined";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   ticket: {
-    position: "relative",
+    position: "relative"
   },
 
   pendingTicket: {
-    cursor: "unset",
+    cursor: "unset"
   },
 
   noTicketsDiv: {
@@ -50,26 +51,26 @@ const useStyles = makeStyles((theme) => ({
     margin: 40,
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "center"
   },
 
   noTicketsText: {
     textAlign: "center",
     color: "rgb(104, 121, 146)",
     fontSize: "14px",
-    lineHeight: "1.4",
+    lineHeight: "1.4"
   },
 
   noTicketsTitle: {
     textAlign: "center",
     fontSize: "16px",
     fontWeight: "600",
-    margin: "0px",
+    margin: "0px"
   },
 
   contactNameWrapper: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
 
   lastMessageTime: {
@@ -83,11 +84,11 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "center",
     justifySelf: "flex-end",
     marginRight: 32,
-    marginLeft: "auto",
+    marginLeft: "auto"
   },
 
   contactLastMessage: {
-    paddingRight: "50%",
+    paddingRight: "50%"
   },
 
   newMessagesCount: {
@@ -100,12 +101,12 @@ const useStyles = makeStyles((theme) => ({
   badgeStyle: {
     color: "white",
     backgroundColor: green[500],
-    right: 20,
+    right: 20
   },
 
   acceptButton: {
     position: "absolute",
-    right: "108px",
+    right: "108px"
   },
 
   ticketQueueColor: {
@@ -114,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     position: "absolute",
     top: "0%",
-    left: "0%",
+    left: "0%"
   },
 
   ticketInfo: {
@@ -136,9 +137,8 @@ const useStyles = makeStyles((theme) => ({
       padding: 3
     },
     "& .MuiBadge-anchorOriginTopRightRectangle": {
-      transform: "scale(1) translate(0%, -40%)",
-    },
-
+      transform: "scale(1) translate(0%, -40%)"
+    }
   }
 }));
 
@@ -171,12 +171,12 @@ const TicketListItemCustom = ({ ticket }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleCloseTicket = async (id) => {
+  const handleCloseTicket = async id => {
     setLoading(true);
     try {
       await api.put(`/tickets/${id}`, {
         status: "closed",
-        userId: user?.id,
+        userId: user?.id
       });
     } catch (err) {
       setLoading(false);
@@ -188,12 +188,12 @@ const TicketListItemCustom = ({ ticket }) => {
     history.push(`/tickets/`);
   };
 
-  const handleAcepptTicket = async (id) => {
+  const handleAcepptTicket = async id => {
     setLoading(true);
     try {
       await api.put(`/tickets/${id}`, {
         status: "open",
-        userId: user?.id,
+        userId: user?.id
       });
     } catch (err) {
       setLoading(false);
@@ -205,7 +205,7 @@ const TicketListItemCustom = ({ ticket }) => {
     history.push(`/tickets/${ticket.uuid}`);
   };
 
-  const handleSelectTicket = (ticket) => {
+  const handleSelectTicket = ticket => {
     const code = uuidv4();
     const { id, uuid } = ticket;
     setCurrentTicket({ id, uuid, code });
@@ -249,7 +249,7 @@ const TicketListItemCustom = ({ ticket }) => {
                 top: -6
               }}
               badgeContent={ticket.queue?.name || "Sem fila"}
-            //color="primary"
+              //color="primary"
             />
           )}
           {ticket.status === "open" && (
@@ -260,7 +260,7 @@ const TicketListItemCustom = ({ ticket }) => {
                 style={{
                   color: red[700],
                   cursor: "pointer",
-                  marginRight: 5,
+                  marginRight: 5
                 }}
               />
             </Tooltip>
@@ -273,7 +273,7 @@ const TicketListItemCustom = ({ ticket }) => {
                 style={{
                   color: blue[700],
                   cursor: "pointer",
-                  marginRight: 5,
+                  marginRight: 5
                 }}
               />
             </Tooltip>
@@ -291,7 +291,6 @@ const TicketListItemCustom = ({ ticket }) => {
     } else {
       return (
         <>
-
           {ticket.queue?.name !== null && (
             <Badge
               className={classes.Radiusdot}
@@ -306,7 +305,7 @@ const TicketListItemCustom = ({ ticket }) => {
                 top: -6
               }}
               badgeContent={ticket.queue?.name || "Sem fila"}
-            //color=
+              //color=
             />
           )}
           {ticket.status === "pending" && (
@@ -317,7 +316,7 @@ const TicketListItemCustom = ({ ticket }) => {
                 style={{
                   color: red[700],
                   cursor: "pointer",
-                  marginRight: 5,
+                  marginRight: 5
                 }}
               />
             </Tooltip>
@@ -338,7 +337,7 @@ const TicketListItemCustom = ({ ticket }) => {
                 style={{
                   color: red[700],
                   cursor: "pointer",
-                  marginRight: 5,
+                  marginRight: 5
                 }}
               />
             </Tooltip>
@@ -351,7 +350,7 @@ const TicketListItemCustom = ({ ticket }) => {
                 style={{
                   color: blue[700],
                   cursor: "pointer",
-                  marginRight: 5,
+                  marginRight: 5
                 }}
               />
             </Tooltip>
@@ -364,7 +363,7 @@ const TicketListItemCustom = ({ ticket }) => {
                 style={{
                   color: green[700],
                   cursor: "pointer",
-                  marginRight: 5,
+                  marginRight: 5
                 }}
               />
             </Tooltip>
@@ -384,13 +383,13 @@ const TicketListItemCustom = ({ ticket }) => {
       <ListItem
         dense
         button
-        onClick={(e) => {
+        onClick={e => {
           if (ticket.status === "pending") return;
           handleSelectTicket(ticket);
         }}
         selected={ticketId && +ticketId === ticket.id}
         className={clsx(classes.ticket, {
-          [classes.pendingTicket]: ticket.status === "pending",
+          [classes.pendingTicket]: ticket.status === "pending"
         })}
       >
         <Tooltip
@@ -431,11 +430,20 @@ const TicketListItemCustom = ({ ticket }) => {
                 component="span"
                 variant="body2"
                 color="textSecondary"
-              > {ticket.lastMessage.includes('data:image/png;base64') ? <MarkdownWrapper> Localização</MarkdownWrapper> : <MarkdownWrapper>{ticket.lastMessage}</MarkdownWrapper>}
-                {ticket.lastMessage === "" ? <br /> : <MarkdownWrapper>{ticket.lastMessage}</MarkdownWrapper>}
+              >
+                {" "}
+                {ticket.lastMessage.includes("data:image/png;base64") ? (
+                  <MarkdownWrapper> Localização</MarkdownWrapper>
+                ) : (
+                  <MarkdownWrapper>{ticket.lastMessage}</MarkdownWrapper>
+                )}
+                {ticket.lastMessage === "" ? (
+                  <br />
+                ) : (
+                  <MarkdownWrapper>{ticket.lastMessage}</MarkdownWrapper>
+                )}
               </Typography>
             </span>
-
           }
         />
         <ListItemSecondaryAction>
@@ -460,9 +468,11 @@ const TicketListItemCustom = ({ ticket }) => {
             <>
               <Badge
                 className={classes.newMessagesCount}
-                badgeContent={ticket.unreadMessages ? ticket.unreadMessages : null}
+                badgeContent={
+                  ticket.unreadMessages ? ticket.unreadMessages : null
+                }
                 classes={{
-                  badge: classes.badgeStyle,
+                  badge: classes.badgeStyle
                 }}
               />
               <Typography
@@ -478,12 +488,9 @@ const TicketListItemCustom = ({ ticket }) => {
                 )}
               </Typography>
               <br />
-
             </>
           )}
-
         </ListItemSecondaryAction>
-
       </ListItem>
       <Divider variant="inset" component="li" />
     </React.Fragment>

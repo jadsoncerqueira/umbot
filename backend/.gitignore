@@ -1,5 +1,4 @@
 node_modules
-public/*
 dist
 !public/.gitkeep
 .env
@@ -14,3 +13,4 @@ yarn-error.log
 # Ignore test-related files
 /coverage.data
 /coverage/
+.vercel
